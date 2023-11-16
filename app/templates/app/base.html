@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+ {% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    
+    <link rel="stylesheet" href="{% static 'app/css/owl.carousel.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'app/css/all.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'app/css/style.css' %}" />
+
+    <title>Coupons That Matter | {% 
+    {% block title %}
+        
+    {% endblock title %}
+        %}</title>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-danger">    <!--we can use primary also-->
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+    <img src="{% static 'app/images/banner/logo1.png' %}" width="50" height="50"/>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/">Home</a>
+        </li>
+        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Coupons & Deals
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{% url 'category' 'FC' %}">Fashion Coupons</a></li>
+            <li><a class="dropdown-item" href="{% url 'category' 'FOC' %}">Food Products Coupons</a></li>
+            <li><a class="dropdown-item" href="{% url 'category' 'SC' %}">Shoes Coupons</a></li>
+            <li><a class="dropdown-item" href="{% url 'category' 'CC' %}">Clothing Coupons</a></li>
+            <li><a class="dropdown-item" href="{% url 'category' 'FC' %}">Shopping Coupons</a></li>
+            <li><a class="dropdown-item" href="{% url 'category' 'SPC' %}">Mall Coupons</a></li>
+            <li><a class="dropdown-item" href="{% url 'category' 'EC' %}">Electronics Coupons</a></li>
+            <li><a class="dropdown-item" href="{% url 'category' 'TCC' %}">Travel Coupons Coupons</a></li>
+            <li><a class="dropdown-item" href="{% url 'category' 'ZSC' %}">Zomato/swiggy Coupons</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Companies
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Nike</a></li>
+            <li><a class="dropdown-item" href="#">Jordan</a></li>
+            <li><a class="dropdown-item" href="#">Gucci</a></li>
+            <li><a class="dropdown-item" href="#">DLF</a></li>
+            <li><a class="dropdown-item" href="#">Burger King</a></li>
+            <li><a class="dropdown-item" href="#">Dominos/pizza Hut</a></li>
+            <li><a class="dropdown-item" href="#">Google Pay</a></li>
+            <li><a class="dropdown-item" href="#">Mama Earth</a></li>
+            <li><a class="dropdown-item" href="#">JBL/Boat</a></li>
+            <li><a class="dropdown-item" href="#">Zara/H&M</a></li>
+            
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="#">Blog</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="#">Join us</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="#">Contact us</a>
+        </li>
+      </ul>
+      <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+    </div>
+    <ul class=" navbar-nav me-auto mb-2 mb-lg-0">
+    <li class="nav-item dropdown mx-2">
+        <a class="nav-link dropdown-toggle text-white" href="#" 
+        id="profileDropdown" role="button" data-bs-toggle="dropdown" 
+        aria-expanded="false">Siddharth</a>
+        <ul class="dropdown-menu" aria-labelledby="profileDropdown">
+            <li><a class="dropdown-item" href ="#" >Profile</a></li>
+            <li><a class="dropdown-item" href ="#" >Orders</a></li>
+            <li><a class="dropdown-item" href ="#" >Change Password</a></li>
+            <li><a class="dropdown-item" href ="#" >Logout</a></li>
+        </ul>
+    </li>
+    <li class="nav-item mx-2">
+    <a herf="#" class="nav-link text-white">Cart 4</a>
+    </li>
+    <li class="nav-item mx-2">
+    <a herf="#" class="nav-link text-white">WishList 4</a>
+    </li>
+    <li class="nav-item mx-2">
+    <a herf="#" class="nav-link text-white">Login</a>
+    </li>
+    <li class="nav-item mx-2">
+    <a herf="#" class="nav-link text-white">Registration</a>
+    </li>
+
+
+   </ul>
+   </div>
+</nav>
+
+
+{% block banner-slider %}{% endblock banner-slider %}
+
+{% block information %}{% endblock information %}
+    
+{% block main-content %}{% endblock main-content %}
+
+<footer class="container-fluid bg-primary fixed-bottom text-white text-center p-2 mt-5">
+Copywright : 2023 || developed by : Siddharth Patel
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<script script="{% static 'app/js/owl.carousel.min.js' %}" ></script>
+<script script="{% static 'app/js/all.min.js' %}" ></script>
+<script script="{% static 'app/js/myscript.js' %}" ></script>
+</body>
+</html>

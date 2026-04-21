@@ -1,0 +1,526 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block title %}{{ coupon.title }} - Coupon Bazaar{% endblock %}
+
+{% block extra_css %}
+<style>
+  /* ── Breadcrumb ── */
+  .detail-breadcrumb {
+    background: var(--primary);
+    padding: 1.2rem 0;
+  }
+  .detail-breadcrumb .breadcrumb {
+    margin: 0;
+    background: none;
+  }
+  .detail-breadcrumb .breadcrumb-item a {
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    font-size: 0.88rem;
+    transition: color 0.2s;
+  }
+  .detail-breadcrumb .breadcrumb-item a:hover {
+    color: var(--accent);
+  }
+  .detail-breadcrumb .breadcrumb-item.active {
+    color: #fff;
+    font-size: 0.88rem;
+    font-weight: 500;
+  }
+  .detail-breadcrumb .breadcrumb-item + .breadcrumb-item::before {
+    color: rgba(255,255,255,0.3);
+    content: "\f105";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    font-size: 0.7rem;
+  }
+
+  /* ── Product Section ── */
+  .detail-section {
+    padding: 3rem 0 4rem;
+  }
+
+  /* ── Image ── */
+  .detail-img-wrap {
+    background: #fff;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: 0 4px 25px rgba(0,0,0,0.08);
+    position: relative;
+  }
+  .detail-img-wrap img {
+    width: 100%;
+    height: 420px;
+    object-fit: cover;
+    transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+  }
+  .detail-img-wrap:hover img {
+    transform: scale(1.08);
+  }
+  .detail-img-wrap .img-overlay {
+    position: absolute;
+    top: 1rem; left: 1rem;
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  /* ── Info ── */
+  .detail-info {
+    animation: fadeInUp 0.6s ease-out;
+  }
+  .detail-category-badge {
+    display: inline-block;
+    background: var(--accent-light);
+    color: var(--accent-hover);
+    font-weight: 700;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 0.35rem 1rem;
+    border-radius: 50px;
+    margin-bottom: 0.8rem;
+  }
+  .detail-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 2.2rem;
+    color: var(--primary);
+    line-height: 1.25;
+    margin-bottom: 1rem;
+  }
+  .detail-price-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .detail-price-current {
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: var(--emerald);
+    line-height: 1;
+  }
+  .detail-price-original {
+    font-size: 1.2rem;
+    text-decoration: line-through;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+  .detail-discount-pct {
+    background: linear-gradient(135deg, var(--rose), #e11d48);
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 800;
+    padding: 0.35rem 0.85rem;
+    border-radius: 8px;
+    letter-spacing: 0.5px;
+  }
+  .detail-desc {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+  }
+
+  /* ── Coupon details section ── */
+  .coupon-details-box {
+    background: linear-gradient(135deg, #fefce8, #fef3c7);
+    border: 1.5px dashed var(--accent);
+    border-radius: var(--radius);
+    padding: 1.3rem 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .coupon-details-box h6 {
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 0.8rem;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .coupon-details-box .detail-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.4rem 0;
+    font-size: 0.88rem;
+    border-bottom: 1px solid rgba(245,158,11,0.15);
+  }
+  .coupon-details-box .detail-row:last-child {
+    border-bottom: none;
+  }
+  .coupon-details-box .detail-row span:first-child {
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+  .coupon-details-box .detail-row span:last-child {
+    font-weight: 600;
+    color: var(--primary);
+  }
+
+  /* ── Copy Button ── */
+  .coupon-code-box {
+    background: var(--primary);
+    border-radius: var(--radius);
+    padding: 1.2rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: 2px solid transparent;
+  }
+  .coupon-code-box:hover {
+    border-color: var(--accent);
+    box-shadow: 0 5px 25px rgba(15,23,42,0.2);
+  }
+  .coupon-code-box .code-text {
+    font-family: 'Courier New', monospace;
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: 3px;
+  }
+  .coupon-code-box .copy-label {
+    color: rgba(255,255,255,0.5);
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .copy-btn-main {
+    background: linear-gradient(135deg, var(--accent), #f97316);
+    color: var(--primary);
+    border: none;
+    padding: 0.85rem 2rem;
+    border-radius: 12px;
+    font-weight: 800;
+    font-size: 1rem;
+    width: 100%;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+  }
+  .copy-btn-main:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(245,158,11,0.4);
+  }
+  .copy-btn-main.copied {
+    background: linear-gradient(135deg, var(--emerald), #059669);
+    color: #fff;
+  }
+
+  /* ── Share ── */
+  .share-row {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-top: 1rem;
+  }
+  .share-row span {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+  .share-btn {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    border: 1.5px solid #e2e8f0;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .share-btn:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+    transform: translateY(-2px);
+  }
+
+  /* ── Related Section ── */
+  .related-section {
+    padding: 4rem 0;
+    background: linear-gradient(180deg, #fff, var(--surface));
+  }
+  .related-card {
+    background: #fff;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+    text-decoration: none;
+    display: block;
+  }
+  .related-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+  }
+  .related-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    transition: transform 0.4s;
+  }
+  .related-card:hover img {
+    transform: scale(1.05);
+  }
+  .related-card .card-body {
+    padding: 1.1rem 1.2rem;
+  }
+  .related-card .card-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--primary);
+    margin-bottom: 0.4rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .related-card .card-price {
+    font-weight: 800;
+    color: var(--emerald);
+    font-size: 1.05rem;
+  }
+  .related-card .card-price-old {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    text-decoration: line-through;
+    margin-left: 0.4rem;
+    font-weight: 500;
+  }
+
+  /* ── Animations ── */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(25px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.7s cubic-bezier(0.16,1,0.3,1);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (max-width: 991px) {
+    .detail-title { font-size: 1.6rem; }
+    .detail-price-current { font-size: 1.8rem; }
+    .detail-img-wrap img { height: 300px; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Breadcrumb -->
+<div class="detail-breadcrumb">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/"><i class="fas fa-home"></i> Home</a></li>
+        <li class="breadcrumb-item"><a href="/browse/">Browse</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ coupon.title }}</li>
+      </ol>
+    </nav>
+  </div>
+</div>
+
+<!-- Detail Section -->
+<section class="detail-section">
+  <div class="container">
+    <div class="row g-4 g-lg-5">
+
+      <!-- Left: Image -->
+      <div class="col-lg-5">
+        <div class="detail-img-wrap reveal">
+          {% if coupon.product_image %}
+            <img src="{{ coupon.product_image.url }}" alt="{{ coupon.title }}">
+          {% else %}
+            <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600" alt="{{ coupon.title }}">
+          {% endif %}
+          <div class="img-overlay">
+            {% if coupon.selling_price and coupon.discounted_price %}
+              <span class="discount-badge">
+                -{{ coupon.selling_price|add:"-"|add:coupon.discounted_price|default:"0" }}% OFF
+              </span>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Info -->
+      <div class="col-lg-7">
+        <div class="detail-info">
+          {% if coupon.category %}
+            <div class="detail-category-badge">
+              <i class="fas fa-tag me-1"></i> {{ coupon.get_category_display }}
+            </div>
+          {% endif %}
+
+          <h1 class="detail-title">{{ coupon.title }}</h1>
+
+          <div class="detail-price-row">
+            {% if coupon.discounted_price %}
+              <span class="detail-price-current">&#8377;{{ coupon.discounted_price }}</span>
+            {% endif %}
+            {% if coupon.selling_price %}
+              <span class="detail-price-original">&#8377;{{ coupon.selling_price }}</span>
+            {% endif %}
+            {% if coupon.selling_price and coupon.discounted_price %}
+              <span class="detail-discount-pct" id="discountBadge"></span>
+            {% endif %}
+          </div>
+
+          {% if coupon.description %}
+            <p class="detail-desc">{{ coupon.description }}</p>
+          {% endif %}
+
+          {% if coupon.composition or coupon.prodapp %}
+          <div class="coupon-details-box">
+            <h6><i class="fas fa-info-circle me-1"></i> Coupon Details</h6>
+            {% if coupon.composition %}
+              <div class="detail-row">
+                <span>Composition</span>
+                <span>{{ coupon.composition }}</span>
+              </div>
+            {% endif %}
+            {% if coupon.prodapp %}
+              <div class="detail-row">
+                <span>Applicable On</span>
+                <span>{{ coupon.prodapp }}</span>
+              </div>
+            {% endif %}
+          </div>
+          {% endif %}
+
+          <!-- Coupon Code Box -->
+          <div class="coupon-code-box" id="codeBox" onclick="copyCouponCode()">
+            <div>
+              <div class="copy-label">Your coupon code</div>
+              <div class="code-text" id="couponCode">SAVE{{ coupon.pk }}</div>
+            </div>
+            <i class="fas fa-copy" style="color:rgba(255,255,255,0.3); font-size:1.3rem;"></i>
+          </div>
+
+          <button class="copy-btn-main" id="copyBtn" onclick="copyCouponCode()">
+            <i class="fas fa-scissors"></i> Copy Coupon Code
+          </button>
+
+          <div class="share-row">
+            <span>Share:</span>
+            <button class="share-btn" onclick="copyPageLink()" title="Copy link">
+              <i class="fas fa-link"></i>
+            </button>
+            <button class="share-btn" onclick="window.open('https://twitter.com/intent/tweet?url='+encodeURIComponent(window.location.href)+'&text=Check out this coupon!','_blank')" title="Twitter">
+              <i class="fab fa-twitter"></i>
+            </button>
+            <button class="share-btn" onclick="window.open('https://wa.me/?text=Check out this coupon: '+encodeURIComponent(window.location.href),'_blank')" title="WhatsApp">
+              <i class="fab fa-whatsapp"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Related Coupons -->
+{% if related %}
+<section class="related-section">
+  <div class="container">
+    <div class="text-center mb-4 reveal">
+      <div class="section-divider mx-auto"></div>
+      <h2 class="section-heading">Related Coupons</h2>
+      <p class="section-subtitle">You might also like these deals</p>
+    </div>
+    <div class="row g-4">
+      {% for item in related %}
+      <div class="col-6 col-md-4 col-lg-3 reveal">
+        <a href="{% url 'coupon_detail' item.pk %}" class="related-card">
+          <div style="overflow:hidden;">
+            {% if item.product_image %}
+              <img src="{{ item.product_image.url }}" alt="{{ item.title }}">
+            {% else %}
+              <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400" alt="{{ item.title }}">
+            {% endif %}
+          </div>
+          <div class="card-body">
+            <div class="card-title">{{ item.title }}</div>
+            <div>
+              {% if item.discounted_price %}
+                <span class="card-price">&#8377;{{ item.discounted_price }}</span>
+              {% endif %}
+              {% if item.selling_price %}
+                <span class="card-price-old">&#8377;{{ item.selling_price }}</span>
+              {% endif %}
+            </div>
+          </div>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Calculate discount percentage
+  (function() {
+    const sp = {{ coupon.selling_price|default:"0" }};
+    const dp = {{ coupon.discounted_price|default:"0" }};
+    const badge = document.getElementById('discountBadge');
+    if (badge && sp > 0 && dp > 0) {
+      const pct = Math.round(((sp - dp) / sp) * 100);
+      badge.textContent = '-' + pct + '% OFF';
+    }
+  })();
+
+  // Copy coupon code
+  function copyCouponCode() {
+    const code = document.getElementById('couponCode').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      const btn = document.getElementById('copyBtn');
+      btn.classList.add('copied');
+      btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+      setTimeout(() => {
+        btn.classList.remove('copied');
+        btn.innerHTML = '<i class="fas fa-scissors"></i> Copy Coupon Code';
+      }, 2000);
+    });
+  }
+
+  // Copy page link
+  function copyPageLink() {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      const btns = document.querySelectorAll('.share-btn');
+      btns[0].innerHTML = '<i class="fas fa-check"></i>';
+      setTimeout(() => { btns[0].innerHTML = '<i class="fas fa-link"></i>'; }, 1500);
+    });
+  }
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+{% endblock %}

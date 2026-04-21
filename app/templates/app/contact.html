@@ -1,0 +1,443 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block title %}Contact Us - Coupon Bazaar{% endblock %}
+{% block nav_contact %}active{% endblock %}
+
+{% block extra_css %}
+<style>
+  /* ── Hero ── */
+  .contact-hero {
+    background: linear-gradient(135deg, var(--primary) 0%, #1e293b 60%, #0f172a 100%);
+    padding: 5rem 0 4rem;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+  }
+  .contact-hero::before {
+    content: '';
+    position: absolute;
+    top: -40%; left: 50%;
+    transform: translateX(-50%);
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(245,158,11,0.1) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .contact-hero .hero-badge {
+    display: inline-block;
+    background: rgba(245,158,11,0.15);
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 0.4rem 1.2rem;
+    border-radius: 50px;
+    margin-bottom: 1.2rem;
+    border: 1px solid rgba(245,158,11,0.25);
+  }
+  .contact-hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 3rem;
+    color: #fff;
+    margin-bottom: 1rem;
+  }
+  .contact-hero h1 span {
+    background: linear-gradient(135deg, var(--accent), #f97316);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .contact-hero p {
+    color: rgba(255,255,255,0.55);
+    font-size: 1.05rem;
+    max-width: 550px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  /* ── Info Cards ── */
+  .info-cards-section {
+    margin-top: -3rem;
+    position: relative;
+    z-index: 10;
+    padding-bottom: 3rem;
+  }
+  .info-card {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 2rem 1.8rem;
+    text-align: center;
+    box-shadow: 0 8px 35px rgba(0,0,0,0.08);
+    transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+    border: 1px solid #f1f5f9;
+    height: 100%;
+  }
+  .info-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.12);
+  }
+  .info-card-icon {
+    width: 60px; height: 60px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    color: #fff;
+    margin: 0 auto 1.2rem;
+  }
+  .info-card-icon.email   { background: linear-gradient(135deg, var(--accent), #f97316); }
+  .info-card-icon.phone   { background: linear-gradient(135deg, var(--emerald), #059669); }
+  .info-card-icon.location { background: linear-gradient(135deg, var(--purple), #7c3aed); }
+  .info-card h5 {
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+  }
+  .info-card p {
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+  .info-card a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
+  }
+  .info-card a:hover { color: var(--accent-hover); }
+
+  /* ── Contact Form ── */
+  .form-section {
+    padding: 3rem 0 5rem;
+  }
+  .contact-form-card {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 2.5rem 2.5rem;
+    box-shadow: 0 4px 30px rgba(0,0,0,0.06);
+  }
+  .contact-form-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.6rem;
+    color: var(--primary);
+    margin-bottom: 0.4rem;
+  }
+  .contact-form-card .subtitle {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+  }
+  .form-floating > .form-control,
+  .form-floating > .form-select,
+  .form-floating > textarea.form-control {
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+    background: #fff;
+  }
+  .form-floating > .form-control:focus,
+  .form-floating > textarea.form-control:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(245,158,11,0.1);
+  }
+  .form-floating > label {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+  }
+  .submit-btn {
+    background: linear-gradient(135deg, var(--accent), #f97316);
+    color: var(--primary);
+    border: none;
+    padding: 0.85rem 2.5rem;
+    border-radius: 12px;
+    font-weight: 800;
+    font-size: 1rem;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(245,158,11,0.35);
+    color: var(--primary);
+  }
+  .submit-btn.sent {
+    background: linear-gradient(135deg, var(--emerald), #059669);
+    color: #fff;
+  }
+
+  /* ── Map / Decorative ── */
+  .map-card {
+    background: linear-gradient(135deg, var(--primary), #1e293b);
+    border-radius: var(--radius);
+    padding: 2.5rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .map-card::before {
+    content: '';
+    position: absolute;
+    top: -30%; right: -20%;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(245,158,11,0.15) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .map-card::after {
+    content: '';
+    position: absolute;
+    bottom: -20%; left: -10%;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(139,92,246,0.1) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .map-card .map-content {
+    position: relative;
+    z-index: 2;
+  }
+  .map-pin {
+    width: 80px; height: 80px;
+    background: linear-gradient(135deg, var(--accent), #f97316);
+    border-radius: 50% 50% 50% 0;
+    transform: rotate(-45deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 2rem;
+    box-shadow: 0 8px 30px rgba(245,158,11,0.3);
+    animation: pinBounce 2s infinite;
+  }
+  .map-pin i {
+    transform: rotate(45deg);
+    font-size: 1.5rem;
+    color: #fff;
+  }
+  @keyframes pinBounce {
+    0%, 100% { transform: rotate(-45deg) translateY(0); }
+    50% { transform: rotate(-45deg) translateY(-8px); }
+  }
+  .map-card h4 {
+    font-family: 'Playfair Display', serif;
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.3rem;
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+  .map-card p {
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    margin-bottom: 0;
+  }
+  .map-details {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  .map-detail-item {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    color: rgba(255,255,255,0.6);
+    font-size: 0.88rem;
+  }
+  .map-detail-item i {
+    color: var(--accent);
+    width: 18px;
+    text-align: center;
+  }
+
+  /* ── Animations ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.7s cubic-bezier(0.16,1,0.3,1);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+
+  @media (max-width: 768px) {
+    .contact-hero h1 { font-size: 2.2rem; }
+    .contact-form-card { padding: 2rem 1.5rem; }
+    .map-card { margin-top: 2rem; padding: 2rem; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero -->
+<section class="contact-hero">
+  <div class="container position-relative" style="z-index:2;">
+    <div class="hero-badge"><i class="fas fa-paper-plane me-1"></i> Get in Touch</div>
+    <h1>We Would Love to<br><span>Hear From You</span></h1>
+    <p>Have a question, suggestion, or just want to say hello? Drop us a message and we will get back to you as soon as possible.</p>
+  </div>
+</section>
+
+<!-- Info Cards -->
+<section class="info-cards-section">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-4 reveal reveal-delay-1">
+        <div class="info-card">
+          <div class="info-card-icon email"><i class="fas fa-envelope"></i></div>
+          <h5>Email Us</h5>
+          <p>Drop us an email anytime</p>
+          <a href="mailto:hello@couponbazaar.in">hello@couponbazaar.in</a>
+        </div>
+      </div>
+      <div class="col-md-4 reveal reveal-delay-2">
+        <div class="info-card">
+          <div class="info-card-icon phone"><i class="fas fa-phone"></i></div>
+          <h5>Call Us</h5>
+          <p>Mon - Fri, 9 AM to 6 PM</p>
+          <a href="tel:+919876543210">+91 98765 43210</a>
+        </div>
+      </div>
+      <div class="col-md-4 reveal reveal-delay-3">
+        <div class="info-card">
+          <div class="info-card-icon location"><i class="fas fa-map-marker-alt"></i></div>
+          <h5>Visit Us</h5>
+          <p>Our headquarters</p>
+          <span style="color:var(--text-muted); font-size:0.88rem;">New Delhi, India</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Form + Map -->
+<section class="form-section">
+  <div class="container">
+    <div class="row g-4">
+      <!-- Contact Form -->
+      <div class="col-lg-7 reveal">
+        <div class="contact-form-card">
+          <h3>Send Us a Message</h3>
+          <p class="subtitle">Fill out the form and our team will respond within 24 hours.</p>
+          <form id="contactForm" onsubmit="return handleSubmit(event)">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="contactName" placeholder="Your Name" required>
+                  <label for="contactName"><i class="fas fa-user me-1"></i> Your Name</label>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-floating">
+                  <input type="email" class="form-control" id="contactEmail" placeholder="Email Address" required>
+                  <label for="contactEmail"><i class="fas fa-envelope me-1"></i> Email Address</label>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-floating">
+                  <input type="text" class="form-control" id="contactSubject" placeholder="Subject" required>
+                  <label for="contactSubject"><i class="fas fa-tag me-1"></i> Subject</label>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-floating">
+                  <textarea class="form-control" id="contactMessage" placeholder="Your Message" style="height:150px" required></textarea>
+                  <label for="contactMessage"><i class="fas fa-comment me-1"></i> Your Message</label>
+                </div>
+              </div>
+              <div class="col-12">
+                <button type="submit" class="submit-btn" id="submitBtn">
+                  <i class="fas fa-paper-plane"></i> Send Message
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Map Placeholder -->
+      <div class="col-lg-5 reveal reveal-delay-2">
+        <div class="map-card">
+          <div class="map-content">
+            <div class="map-pin">
+              <i class="fas fa-location-dot"></i>
+            </div>
+            <h4>Our Headquarters</h4>
+            <p>Based in the heart of New Delhi, serving coupon enthusiasts across India.</p>
+            <div class="map-details">
+              <div class="map-detail-item">
+                <i class="fas fa-building"></i>
+                <span>Coupon Bazaar HQ</span>
+              </div>
+              <div class="map-detail-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>Connaught Place, New Delhi 110001</span>
+              </div>
+              <div class="map-detail-item">
+                <i class="fas fa-clock"></i>
+                <span>Mon - Fri: 9:00 AM - 6:00 PM</span>
+              </div>
+              <div class="map-detail-item">
+                <i class="fas fa-globe"></i>
+                <span>www.couponbazaar.in</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Form submission handler (frontend only)
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+
+    setTimeout(() => {
+      btn.classList.add('sent');
+      btn.innerHTML = '<i class="fas fa-check"></i> Message Sent!';
+      document.getElementById('contactForm').reset();
+
+      setTimeout(() => {
+        btn.disabled = false;
+        btn.classList.remove('sent');
+        btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
+      }, 3000);
+    }, 1500);
+
+    return false;
+  }
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+{% endblock %}

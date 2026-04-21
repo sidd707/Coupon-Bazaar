@@ -1,0 +1,557 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block title %}About Us - Coupon Bazaar{% endblock %}
+{% block nav_about %}active{% endblock %}
+
+{% block extra_css %}
+<style>
+  /* ── Hero ── */
+  .about-hero {
+    background: linear-gradient(135deg, var(--primary) 0%, #1e293b 50%, #0f172a 100%);
+    padding: 6rem 0 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .about-hero::before {
+    content: '';
+    position: absolute;
+    top: -50%; right: -20%;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(245,158,11,0.12) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .about-hero::after {
+    content: '';
+    position: absolute;
+    bottom: -30%; left: -10%;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(139,92,246,0.1) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .about-hero .hero-badge {
+    display: inline-block;
+    background: rgba(245,158,11,0.15);
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 0.4rem 1.2rem;
+    border-radius: 50px;
+    margin-bottom: 1.2rem;
+    border: 1px solid rgba(245,158,11,0.25);
+  }
+  .about-hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 3.2rem;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 1.2rem;
+  }
+  .about-hero h1 span {
+    background: linear-gradient(135deg, var(--accent), #f97316);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .about-hero p {
+    color: rgba(255,255,255,0.6);
+    font-size: 1.1rem;
+    line-height: 1.8;
+    max-width: 600px;
+  }
+  .hero-stats {
+    display: flex;
+    gap: 3rem;
+    margin-top: 2.5rem;
+  }
+  .hero-stat-item h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 0.1rem;
+  }
+  .hero-stat-item p {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.45);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  /* ── Story ── */
+  .story-section {
+    padding: 5rem 0;
+  }
+  .story-card {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 3rem;
+    box-shadow: 0 4px 30px rgba(0,0,0,0.06);
+    position: relative;
+    overflow: hidden;
+  }
+  .story-card::before {
+    content: '\201C';
+    position: absolute;
+    top: -10px; left: 20px;
+    font-size: 8rem;
+    font-family: 'Playfair Display', serif;
+    color: rgba(245,158,11,0.08);
+    line-height: 1;
+  }
+  .story-card h2 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 2rem;
+    color: var(--primary);
+    margin-bottom: 1.5rem;
+  }
+  .story-card p {
+    color: var(--text-muted);
+    font-size: 1rem;
+    line-height: 1.9;
+    margin-bottom: 1rem;
+  }
+  .story-highlight {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+  .story-highlight-item {
+    flex: 1;
+    background: linear-gradient(135deg, #fefce8, #fef3c7);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    border: 1px solid rgba(245,158,11,0.15);
+  }
+  .story-highlight-item i {
+    font-size: 1.5rem;
+    color: var(--accent);
+    margin-bottom: 0.6rem;
+  }
+  .story-highlight-item h6 {
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--primary);
+    margin-bottom: 0.3rem;
+  }
+  .story-highlight-item p {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  /* ── Mission / Vision / Values ── */
+  .mvv-section {
+    padding: 4rem 0 5rem;
+    background: linear-gradient(180deg, var(--surface), #fff);
+  }
+  .mvv-card {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 2.5rem 2rem;
+    text-align: center;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+    transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+    border: 1px solid #f1f5f9;
+    height: 100%;
+  }
+  .mvv-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+  }
+  .mvv-icon {
+    width: 70px; height: 70px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin: 0 auto 1.5rem;
+    color: #fff;
+  }
+  .mvv-icon.mission { background: linear-gradient(135deg, var(--accent), #f97316); }
+  .mvv-icon.vision  { background: linear-gradient(135deg, var(--purple), #7c3aed); }
+  .mvv-icon.values  { background: linear-gradient(135deg, var(--emerald), #059669); }
+  .mvv-card h4 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: var(--primary);
+    margin-bottom: 0.8rem;
+  }
+  .mvv-card p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  /* ── Team ── */
+  .team-section {
+    padding: 5rem 0;
+  }
+  .team-card {
+    background: #fff;
+    border-radius: var(--radius);
+    padding: 2.5rem 2rem;
+    text-align: center;
+    box-shadow: 0 4px 25px rgba(0,0,0,0.06);
+    transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+    max-width: 340px;
+    margin: 0 auto;
+  }
+  .team-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+  }
+  .team-avatar {
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), #f97316);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 auto 1.5rem;
+    box-shadow: 0 8px 25px rgba(245,158,11,0.3);
+  }
+  .team-card h5 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--primary);
+    margin-bottom: 0.3rem;
+  }
+  .team-card .team-role {
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+  }
+  .team-card p {
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    line-height: 1.7;
+  }
+  .team-socials {
+    display: flex;
+    justify-content: center;
+    gap: 0.6rem;
+    margin-top: 1.2rem;
+  }
+  .team-socials a {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+  .team-socials a:hover {
+    background: var(--accent);
+    color: #fff;
+    transform: translateY(-2px);
+  }
+
+  /* ── Impact ── */
+  .impact-section {
+    padding: 4rem 0 5rem;
+    background: var(--primary);
+    position: relative;
+    overflow: hidden;
+  }
+  .impact-section::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .impact-card {
+    text-align: center;
+    padding: 1.5rem 1rem;
+  }
+  .impact-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 0.3rem;
+  }
+  .impact-card p {
+    color: rgba(255,255,255,0.5);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin: 0;
+  }
+
+  /* ── Animations ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.7s cubic-bezier(0.16,1,0.3,1);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+
+  @media (max-width: 768px) {
+    .about-hero h1 { font-size: 2.2rem; }
+    .hero-stats { gap: 1.5rem; flex-wrap: wrap; }
+    .hero-stat-item h3 { font-size: 1.6rem; }
+    .story-card { padding: 2rem 1.5rem; }
+    .story-highlight { flex-direction: column; }
+    .impact-card h3 { font-size: 2rem; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero -->
+<section class="about-hero">
+  <div class="container position-relative" style="z-index:2;">
+    <div class="row align-items-center">
+      <div class="col-lg-7">
+        <div class="hero-badge"><i class="fas fa-sparkles me-1"></i> Our Story</div>
+        <h1>Saving Money,<br><span>One Coupon</span> at a Time</h1>
+        <p>
+          We built Coupon Bazaar to solve a simple problem: millions of coupons go unused every day.
+          We created a marketplace where people can buy and sell coupons, turning waste into savings.
+        </p>
+        <div class="hero-stats">
+          <div class="hero-stat-item">
+            <h3>10K+</h3>
+            <p>Active Coupons</p>
+          </div>
+          <div class="hero-stat-item">
+            <h3>5K+</h3>
+            <p>Happy Users</p>
+          </div>
+          <div class="hero-stat-item">
+            <h3>&#8377;25L+</h3>
+            <p>Saved</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-5 d-none d-lg-flex justify-content-center">
+        <div style="width:320px; height:320px; border-radius:50%; background:linear-gradient(135deg, rgba(245,158,11,0.1), rgba(139,92,246,0.08)); display:flex; align-items:center; justify-content:center;">
+          <div style="width:240px; height:240px; border-radius:50%; background:linear-gradient(135deg, rgba(245,158,11,0.15), rgba(249,115,22,0.1)); display:flex; align-items:center; justify-content:center;">
+            <i class="fas fa-ticket" style="font-size:4rem; color:var(--accent); opacity:0.8;"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Story -->
+<section class="story-section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        <div class="story-card reveal">
+          <h2>What is Coupon Bazaar?</h2>
+          <p>
+            Coupon Bazaar is India's first dedicated marketplace for buying and selling unused coupons and discount codes.
+            We believe every coupon deserves to be used. Whether it is a brand loyalty reward you cannot redeem, a gift card
+            you will not use, or a promotional code that is about to expire, Coupon Bazaar gives it a second life.
+          </p>
+          <p>
+            <strong>For sellers:</strong> Instead of letting your coupons expire worthless, list them on our platform and earn money.
+            Set your own price and reach thousands of eager buyers who are looking for exactly that deal.
+          </p>
+          <p>
+            <strong>For buyers:</strong> Why pay full price when someone else has a discount they are not going to use?
+            Browse hundreds of verified coupons across fashion, food, electronics, travel, and more -- all at
+            prices well below face value.
+          </p>
+          <div class="story-highlight">
+            <div class="story-highlight-item">
+              <i class="fas fa-hand-holding-dollar d-block"></i>
+              <h6>Sell Unused Coupons</h6>
+              <p>Turn expiring coupons into cash instantly</p>
+            </div>
+            <div class="story-highlight-item">
+              <i class="fas fa-tags d-block"></i>
+              <h6>Buy at Discount</h6>
+              <p>Get coupons for a fraction of their value</p>
+            </div>
+            <div class="story-highlight-item">
+              <i class="fas fa-shield-halved d-block"></i>
+              <h6>Verified & Safe</h6>
+              <p>All coupons verified before listing</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Mission / Vision / Values -->
+<section class="mvv-section">
+  <div class="container">
+    <div class="text-center mb-5 reveal">
+      <div class="section-divider mx-auto"></div>
+      <h2 class="section-heading">What Drives Us</h2>
+      <p class="section-subtitle">Our core principles that shape everything we do</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4 reveal reveal-delay-1">
+        <div class="mvv-card">
+          <div class="mvv-icon mission"><i class="fas fa-rocket"></i></div>
+          <h4>Our Mission</h4>
+          <p>
+            To eliminate coupon waste by creating a seamless marketplace where every discount finds its rightful user,
+            saving people money and reducing commercial waste.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-4 reveal reveal-delay-2">
+        <div class="mvv-card">
+          <div class="mvv-icon vision"><i class="fas fa-eye"></i></div>
+          <h4>Our Vision</h4>
+          <p>
+            To become the go-to platform for coupon exchange in India, building a community-driven economy
+            where savings are shared and no good deal goes to waste.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-4 reveal reveal-delay-3">
+        <div class="mvv-card">
+          <div class="mvv-icon values"><i class="fas fa-heart"></i></div>
+          <h4>Our Values</h4>
+          <p>
+            Transparency, trust, and community first. We believe in fair pricing, honest listings,
+            and creating genuine value for every member of our marketplace.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Team -->
+<section class="team-section">
+  <div class="container">
+    <div class="text-center mb-5 reveal">
+      <div class="section-divider mx-auto"></div>
+      <h2 class="section-heading">Meet the Team</h2>
+      <p class="section-subtitle">The people behind Coupon Bazaar</p>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-lg-4 reveal">
+        <div class="team-card">
+          <div class="team-avatar">SP</div>
+          <h5>Siddharth Patel</h5>
+          <div class="team-role">Full-Stack Developer</div>
+          <p>
+            Building Coupon Bazaar from the ground up -- handling everything from backend architecture
+            and database design to crafting pixel-perfect frontend experiences.
+          </p>
+          <div class="team-socials">
+            <a href="#"><i class="fab fa-github"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Impact Numbers -->
+<section class="impact-section">
+  <div class="container position-relative" style="z-index:2;">
+    <div class="text-center mb-5 reveal">
+      <div class="section-divider mx-auto" style="background:linear-gradient(90deg, var(--accent), #f97316);"></div>
+      <h2 class="section-heading" style="color:#fff;">Our Impact in Numbers</h2>
+      <p style="color:rgba(255,255,255,0.5); font-size:1rem;">Growing every day, one coupon at a time</p>
+    </div>
+    <div class="row g-4">
+      <div class="col-6 col-md-3 reveal reveal-delay-1">
+        <div class="impact-card">
+          <h3 data-count="10000">0</h3>
+          <p>Coupons Listed</p>
+        </div>
+      </div>
+      <div class="col-6 col-md-3 reveal reveal-delay-1">
+        <div class="impact-card">
+          <h3 data-count="5000">0</h3>
+          <p>Happy Users</p>
+        </div>
+      </div>
+      <div class="col-6 col-md-3 reveal reveal-delay-2">
+        <div class="impact-card">
+          <h3 data-count="50">0</h3>
+          <p>Brand Partners</p>
+        </div>
+      </div>
+      <div class="col-6 col-md-3 reveal reveal-delay-3">
+        <div class="impact-card">
+          <h3 data-count="98">0</h3>
+          <p>Satisfaction %</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+
+        // Counter animation for impact numbers
+        const counters = entry.target.querySelectorAll('[data-count]');
+        counters.forEach(counter => {
+          if (counter.dataset.animated) return;
+          counter.dataset.animated = 'true';
+          const target = parseInt(counter.dataset.count);
+          const duration = 2000;
+          const step = target / (duration / 16);
+          let current = 0;
+          const timer = setInterval(() => {
+            current += step;
+            if (current >= target) {
+              current = target;
+              clearInterval(timer);
+            }
+            if (target >= 1000) {
+              counter.textContent = Math.floor(current).toLocaleString() + '+';
+            } else {
+              counter.textContent = Math.floor(current) + (target === 98 ? '%' : '+');
+            }
+          }, 16);
+        });
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+{% endblock %}
